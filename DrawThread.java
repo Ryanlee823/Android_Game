@@ -1,6 +1,6 @@
 package com.bn.box2d.blockl;
 import static com.bn.box2d.blockl.Constant.*;
-//»æÖÆÏß³Ì
+//ç»˜åˆ¶çº¿ç¨‹
 public class DrawThread extends Thread
 {
 	GameView gv;
@@ -14,7 +14,7 @@ public class DrawThread extends Thread
 	{
 		while(DRAW_THREAD_FLAG)
 		{
-			gv.activity.world.step(TIME_STEP, ITERA);//¿ªÊ¼Ä£Äâ
+			gv.activity.world.step(TIME_STEP, ITERA);//å¼€å§‹æ¨¡æ‹Ÿ
 			gv.repaint();
 
 			try 

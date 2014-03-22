@@ -7,25 +7,25 @@ import org.jbox2d.dynamics.World;
 
 import static com.bn.box2d.blockl.Constant.*;
 
-//Éú³ÉÎïÀíĞÎ×´µÄ¹¤¾ßÀà
+//ç”Ÿæˆç‰©ç†å½¢çŠ¶çš„å·¥å…·ç±»
 public class Box2DUtil 
 {
-	//´´½¨¾ØĞÎÎïÌå(ÑÕÉ«)
+	//åˆ›å»ºçŸ©å½¢ç‰©ä½“(é¢œè‰²)
 	public static MyRectColor createBox
 	(
-		float x,//x×ø±ê
-		float y,//y×ø±ê
-	    float halfWidth,//°ë¿í
-	    float halfHeight,//°ë¸ß
-        boolean isStatic,//ÊÇ·ñÎª¾²Ö¹µÄ
-        World world,//ÊÀ½ç
-        int color,//ÑÕÉ«
-        boolean isBlock//ÊÇ·ñÎª×©¿é
+		float x,//xåæ ‡
+		float y,//yåæ ‡
+	    float halfWidth,//åŠå®½
+	    float halfHeight,//åŠé«˜
+        boolean isStatic,//æ˜¯å¦ä¸ºé™æ­¢çš„
+        World world,//ä¸–ç•Œ
+        int color,//é¢œè‰²
+        boolean isBlock//æ˜¯å¦ä¸ºç –å—
     )
 	{    
-		//´´½¨¶à±ßĞÎÃèÊö¶ÔÏó
+		//åˆ›å»ºå¤šè¾¹å½¢æè¿°å¯¹è±¡
 		PolygonDef shape = new PolygonDef();   
-		//ÉèÖÃÃÜ¶È
+		//è®¾ç½®å¯†åº¦
 		if(isStatic)
 		{
 			shape.density = 0;
@@ -34,52 +34,52 @@ public class Box2DUtil
 		{
 			shape.density = 8.0f;
 		}   
-		//ÉèÖÃÄ¦²ÁÏµÊı
+		//è®¾ç½®æ‘©æ“¦ç³»æ•°
 		shape.friction = 0.0f;   
-		//ÉèÖÃÄÜÁ¿ËğÊ§ÂÊ£¨·´µ¯£©
+		//è®¾ç½®èƒ½é‡æŸå¤±ç‡ï¼ˆåå¼¹ï¼‰
 		shape.restitution = 1.0f;   
 		shape.setAsBox(halfWidth/RATE, halfHeight/RATE);   
-		//´´½¨¸ÕÌåÃèÊö¶ÔÏó   
+		//åˆ›å»ºåˆšä½“æè¿°å¯¹è±¡   
 		BodyDef bodyDef = new BodyDef();   
-		//ÉèÖÃÎ»ÖÃ
+		//è®¾ç½®ä½ç½®
 		bodyDef.position.set(x/RATE, y/RATE);   
-		//ÔÚÊÀ½çÖĞ´´½¨¸ÕÌå
+		//åœ¨ä¸–ç•Œä¸­åˆ›å»ºåˆšä½“
 		Body bodyTemp= world.createBody(bodyDef); 
-		//Ö¸¶¨¸ÕÌåĞÎ×´
+		//æŒ‡å®šåˆšä½“å½¢çŠ¶
 		bodyTemp.createShape(shape);   
 		bodyTemp.setMassFromShapes(); 
 		
 		return new MyRectColor(bodyTemp,halfWidth,halfHeight,color,isBlock);
 	}   
 
-	//´´½¨Ô²ĞÎ£¨ÑÕÉ«£©
+	//åˆ›å»ºåœ†å½¢ï¼ˆé¢œè‰²ï¼‰
 	public static MyCircleColor createCircle
 	(
-		float x,//x×ø±ê
-		float y,//y×ø±ê
-		float radius,//°ë¾¶
-		World world,//ÊÀ½ç
-		int color//ÑÕÉ«
+		float x,//xåæ ‡
+		float y,//yåæ ‡
+		float radius,//åŠå¾„
+		World world,//ä¸–ç•Œ
+		int color//é¢œè‰²
 	)
 	{   
-		//´´½¨Ô²ÃèÊö¶ÔÏó
+		//åˆ›å»ºåœ†æè¿°å¯¹è±¡
 		CircleDef shape = new CircleDef();  
-		//ÉèÖÃÃÜ¶È
+		//è®¾ç½®å¯†åº¦
 		shape.density = 1;   		
-		//ÉèÖÃÄ¦²ÁÏµÊı
+		//è®¾ç½®æ‘©æ“¦ç³»æ•°
 		shape.friction = 0.0f;   
-		//ÉèÖÃÄÜÁ¿ËğÊ§ÂÊ£¨·´µ¯£©
+		//è®¾ç½®èƒ½é‡æŸå¤±ç‡ï¼ˆåå¼¹ï¼‰
 		shape.restitution = 1.0f;   
-		//ÉèÖÃ°ë¾¶
+		//è®¾ç½®åŠå¾„
 		shape.radius = radius/RATE;   
 		
-		//´´½¨¸ÕÌåÃèÊö¶ÔÏó   
+		//åˆ›å»ºåˆšä½“æè¿°å¯¹è±¡   
 		BodyDef bodyDef = new BodyDef(); 
-		//ÉèÖÃÎ»ÖÃ
+		//è®¾ç½®ä½ç½®
 		bodyDef.position.set(x/RATE, y/RATE);   
-		//ÔÚÊÀ½çÖĞ´´½¨¸ÕÌå
+		//åœ¨ä¸–ç•Œä¸­åˆ›å»ºåˆšä½“
 		Body bodyTemp = world.createBody(bodyDef); 
-		//Ö¸¶¨¸ÕÌåĞÎ×´
+		//æŒ‡å®šåˆšä½“å½¢çŠ¶
 		bodyTemp.createShape(shape);   
 		bodyTemp.setMassFromShapes();  		
 		return new MyCircleColor(bodyTemp,radius,color);

@@ -1,11 +1,10 @@
-package com.bn.box2d.blockl;     
+package com.bn.box2d.qqb;     
 import java.util.ArrayList;
 import org.jbox2d.collision.AABB;   
 import org.jbox2d.common.Vec2;    
-import org.jbox2d.dynamics.ContactListener;
 import org.jbox2d.dynamics.World;     
-import org.jbox2d.dynamics.contacts.ContactPoint;
-import org.jbox2d.dynamics.contacts.ContactResult;
+import org.jbox2d.dynamics.joints.RevoluteJointDef;
+
 import android.app.Activity;    
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
@@ -13,7 +12,7 @@ import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.Window;   
 import android.view.WindowManager;  
-import static com.bn.box2d.blockl.Constant.*;
+import static com.bn.box2d.qqb.Constant.*;
   
 public class MyBox2dActivity extends Activity 
 {   
@@ -52,78 +51,73 @@ public class MyBox2dActivity extends Activity
         worldAABB.lowerBound.set(-100.0f,-100.0f);
         worldAABB.upperBound.set(100.0f, 100.0f);//注意这里使用的是现实世界的单位   
            
-        Vec2 gravity = new Vec2(0.0f,0.0f);   
+        Vec2 gravity = new Vec2(0.0f,10.0f);   
         boolean doSleep = true;     
         //创建世界 
         world = new World(worldAABB, gravity, doSleep);          
         
-        //创建4边
+        //创建地面
         final int kd=20;//宽度或高度
-        MyRectColor mrc=Box2DUtil.createBox(kd/2, SCREEN_HEIGHT/2, kd/2, SCREEN_HEIGHT/2, true,world,Color.YELLOW,false);
-        bl.add(mrc);
-        mrc=Box2DUtil.createBox(SCREEN_WIDTH-kd/2, SCREEN_HEIGHT/2, kd/2, SCREEN_HEIGHT/2, true,world,Color.YELLOW,false);
-        bl.add(mrc);
-        mrc=Box2DUtil.createBox(SCREEN_WIDTH/2, kd/2, SCREEN_WIDTH/2, kd/2, true,world,Color.YELLOW,false);
-        bl.add(mrc);
-        mrc=Box2DUtil.createBox(SCREEN_WIDTH/2, SCREEN_HEIGHT-kd/2, SCREEN_WIDTH/2, kd/2, true,world,Color.YELLOW,false);
+        MyPolygonColor mrc=Box2DUtil.createPolygon
+        (
+        	0, 
+        	SCREEN_HEIGHT-kd,
+        	new float[][]
+        	{
+        	  {0,0},{SCREEN_WIDTH,0},{SCREEN_WIDTH,SCREEN_HEIGHT},{0,SCREEN_HEIGHT}
+        	},
+        	true,
+        	world,
+        	Color.YELLOW
+        );
         bl.add(mrc);
         
-        //创建砖块
-        final int bs=20;//砖块间距
-        final int bw=(SCREEN_WIDTH-2*kd-5*bs)/4;
-        for(int i=0;i<4;i++)
-        {
-        	for(int j=0;j<4;j++)
+        //创建三角形
+        MyPolygonColor mrca=Box2DUtil.createPolygon
+        (
+        	SCREEN_WIDTH/2-30, 
+        	SCREEN_HEIGHT-kd-62,
+        	new float[][]
         	{
-        		mrc=Box2DUtil.createBox
-        		(
-        				kd+bs+bw/2+j*(bw+bs), 
-        				kd+bs+kd/2+i*(kd+bs), 
-        				bw/2, kd/2, 
-        				true,
-        				world,
-        				Color.RED,
-        				true
-        		);
-                bl.add(mrc);
-        	}
-        }
+        	  {30,0},
+        	  {60,60},
+        	  {0,60}
+        	},
+        	true,
+        	world,
+        	Color.RED
+        );
+        bl.add(mrca);
+        
+        //创建板
+        MyPolygonColor mrcb=Box2DUtil.createPolygon
+        (
+        	SCREEN_WIDTH/2-150, 
+        	SCREEN_HEIGHT-kd-60-kd,
+        	new float[][]
+        	{
+        	  {0,0},
+        	  {300,0},
+        	  {300,kd},
+        	  {0,kd}
+        	}, 
+        	false,
+        	world, 
+        	Color.BLUE
+        );
+        bl.add(mrcb);  
+   
+        //创建旋转关节
+        RevoluteJointDef rjd=new RevoluteJointDef();
+        rjd.initialize(mrca.body, mrcb.body, new Vec2(SCREEN_WIDTH/2/RATE,(SCREEN_HEIGHT-kd-60)/RATE));
+        world.createJoint(rjd);
         
         //创建球
-        MyCircleColor ball=Box2DUtil.createCircle(SCREEN_WIDTH/2, SCREEN_HEIGHT-100, kd, world,Color.MAGENTA);
+        MyCircleColor ball=Box2DUtil.createCircle(SCREEN_WIDTH/2-100, SCREEN_HEIGHT-700, kd*2/3, world,Color.MAGENTA);
         bl.add(ball);
-        ball.body.setLinearVelocity(new Vec2(5,-40));
-        
-        //添加监听器
-        initContactListener();
+        ball.body.setLinearVelocity(new Vec2(0,0));
            
         GameView gv= new GameView(this);   
         setContentView(gv);   
     }   
-    
-	//加载碰撞监听器
-	public void initContactListener()
-	{
-		ContactListener cl=new ContactListener()
-		{
-			@Override
-			public void add(ContactPoint arg0) 
-			{//从当前的body查找出对应物件并执行事件处理
-				BodySearchUtil.doAction(arg0.shape1.getBody(), arg0.shape2.getBody(), bl);				
-			}
-
-			@Override
-			public void persist(ContactPoint arg0){}
-
-			@Override
-			public void remove(ContactPoint arg0) 
-			{
-			}
-
-			@Override
-			public void result(ContactResult arg0) 
-			{}			
-		};
-		world.setContactListener(cl);
-	}
 }  

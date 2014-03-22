@@ -5,14 +5,14 @@ import android.graphics.Matrix;
 import android.graphics.Paint;
 import static com.bn.box2d.blockl.Constant.*;
 
-//×Ô¶¨ÒåµÄ¾ØĞÎÀà(ÑÕÉ«)
+//è‡ªå®šä¹‰çš„çŸ©å½¢ç±»(é¢œè‰²)
 public class MyRectColor extends MyBody
 {	
-	float halfWidth;//°ë¿í
-	float halfHeight;//°ë¸ß
-	boolean isBlock;//ÊÇ·ñÎª×©¿é
-	boolean isLive=true;//ÊÇ·ñ»æÖÆ
-	boolean isDeleted=false;//ÊÇ·ñ±»É¾³ı
+	float halfWidth;//åŠå®½
+	float halfHeight;//åŠé«˜
+	boolean isBlock;//æ˜¯å¦ä¸ºç –å—
+	boolean isLive=true;//æ˜¯å¦ç»˜åˆ¶
+	boolean isDeleted=false;//æ˜¯å¦è¢«åˆ é™¤
 	
 	public MyRectColor(Body body,float halfWidth,float halfHeight,int color,boolean isBlock)
 	{

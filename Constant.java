@@ -2,12 +2,12 @@ package com.bn.box2d.blockl;
 
 public class Constant 
 {
-	public static final float RATE = 10;//ÆÁÄ»µ½ÏÖÊµÊÀ½çµÄ±ÈÀı 10px£º1m;   
-	public static final boolean DRAW_THREAD_FLAG=true;//»æÖÆÏß³Ì¹¤×÷±êÖ¾Î»
+	public static final float RATE = 10;//å±å¹•åˆ°ç°å®ä¸–ç•Œçš„æ¯”ä¾‹ 10pxï¼š1m;   
+	public static final boolean DRAW_THREAD_FLAG=true;//ç»˜åˆ¶çº¿ç¨‹å·¥ä½œæ ‡å¿—ä½
 	
-	public static final float TIME_STEP = 2.0f/60.0f;//Ä£ÄâµÄµÄÆµÂÊ   
-	public static final int ITERA = 10;//µü´úÔ½´ó£¬Ä£ÄâÔ¼¾«È·£¬µ«ĞÔÄÜÔ½µÍ   
+	public static final float TIME_STEP = 2.0f/60.0f;//æ¨¡æ‹Ÿçš„çš„é¢‘ç‡   
+	public static final int ITERA = 10;//è¿­ä»£è¶Šå¤§ï¼Œæ¨¡æ‹Ÿçº¦ç²¾ç¡®ï¼Œä½†æ€§èƒ½è¶Šä½   
 	
-	public static int SCREEN_WIDTH;  //ÆÁÄ»¿í¶È
-	public static int SCREEN_HEIGHT; //ÆÁÄ»¸ß¶È	
+	public static int SCREEN_WIDTH;  //å±å¹•å®½åº¦
+	public static int SCREEN_HEIGHT; //å±å¹•é«˜åº¦	
 }

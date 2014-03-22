@@ -4,10 +4,10 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import static com.bn.box2d.blockl.Constant.*;
 
-//×Ô¶¨ÒåµÄÔ²ĞÎÀà
+//è‡ªå®šä¹‰çš„åœ†å½¢ç±»
 public class MyCircleColor extends MyBody
 {
-	float radius;//°ë¾¶
+	float radius;//åŠå¾„
 	
 	public MyCircleColor(Body body,float radius,int color)
 	{

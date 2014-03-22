@@ -5,11 +5,11 @@ import org.jbox2d.dynamics.Body;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 
-//×Ô¶¨Òå¸ÕÌå¸ùÀà
+//è‡ªå®šä¹‰åˆšä½“æ ¹ç±»
 public abstract class MyBody 
 {
-	Body body;//¶ÔÓ¦ÎïÀíÒıÇæÖĞµÄ¸ÕÌå
-	int color;//¸ÕÌåµÄÑÕÉ«
+	Body body;//å¯¹åº”ç‰©ç†å¼•æ“ä¸­çš„åˆšä½“
+	int color;//åˆšä½“çš„é¢œè‰²
 	public abstract void drawSelf(Canvas canvas,Paint paint);
 	
 }
