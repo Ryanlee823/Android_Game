@@ -1,4 +1,4 @@
-﻿package com.bn.game.chap11.ex1;
+package com.bn.game.chap11.ex1;
 
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;

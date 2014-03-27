@@ -1,4 +1,4 @@
-package com.bn.game.chap11.ex14;
+package com.bn.game.chap11.ex8;
 import javax.microedition.khronos.opengles.GL10;
 public class Cube 
 {
@@ -15,12 +15,12 @@ public class Cube
 		a=abc[0];
 		b=abc[1];
 		c=abc[2];
-		rect[0]=new TextureRect(scale,a,b,textureIds[0],1,1);
-		rect[1]=new TextureRect(scale,a,b,textureIds[1],1,1);
-		rect[2]=new TextureRect(scale,c,b,textureIds[2],1,1);
-		rect[3]=new TextureRect(scale,c,b,textureIds[3],1,1);
-		rect[4]=new TextureRect(scale,a,c,textureIds[4],1,1);
-		rect[5]=new TextureRect(scale,a,c,textureIds[5],1,1);
+		rect[0]=new TextureRect(scale,a,b,textureIds[0]);
+		rect[1]=new TextureRect(scale,a,b,textureIds[1]);
+		rect[2]=new TextureRect(scale,c,b,textureIds[2]);
+		rect[3]=new TextureRect(scale,c,b,textureIds[3]);
+		rect[4]=new TextureRect(scale,a,c,textureIds[4]);
+		rect[5]=new TextureRect(scale,a,c,textureIds[5]);
 		// 初始化完成后再改变各量的值
 		size=Constant.UNIT_SIZE*scale;
 		a*=size;
@@ -67,5 +67,6 @@ public class Cube
 		gl.glRotatef(-90.0f, 1, 0, 0);
 		rect[5].drawSelf(gl);
 		gl.glPopMatrix();
+		
 	}
 }

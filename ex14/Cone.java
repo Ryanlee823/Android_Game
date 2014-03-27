@@ -1,18 +1,18 @@
-package com.bn.game.chap11.ex14;//ÉùÃû°ü
-import javax.microedition.khronos.opengles.GL10;//ÒıÈëÏà¹ØÀà
+package com.bn.game.chap11.ex14;//å£°ååŒ…
+import javax.microedition.khronos.opengles.GL10;//å¼•å…¥ç›¸å…³ç±»
 public class Cone{
-	Circle bottomCircle;//µ×Ô²
-	ConeSide coneSide;//²àÃæ
-	float xAngle=0;//ÈÆxÖáĞı×ªµÄ½Ç¶È
-    float yAngle=0;//ÈÆyÖáĞı×ªµÄ½Ç¶È
-    float zAngle=0;//ÈÆzÖáĞı×ªµÄ½Ç¶È
-    float size;//³ß´ç
+	Circle bottomCircle;//åº•åœ†
+	ConeSide coneSide;//ä¾§é¢
+	float xAngle=0;//ç»•xè½´æ—‹è½¬çš„è§’åº¦
+    float yAngle=0;//ç»•yè½´æ—‹è½¬çš„è§’åº¦
+    float zAngle=0;//ç»•zè½´æ—‹è½¬çš„è§’åº¦
+    float size;//å°ºå¯¸
     float h;
 	public Cone(float scale,float r, float h, int n, 
 			int BottomTexId, int sideTexId){
 		bottomCircle=new Circle(scale,r,n, BottomTexId);
 		coneSide=new ConeSide(scale, r,  h, n, sideTexId);
-		// ³õÊ¼»¯Íê³ÉºóÔÙ¸Ä±ä¸÷Á¿µÄÖµ
+		// åˆå§‹åŒ–å®Œæˆåå†æ”¹å˜å„é‡çš„å€¼
 		size=Constant.UNIT_SIZE*scale;
 		this.h=h*size;
 	}
@@ -20,13 +20,13 @@ public class Cone{
 		gl.glRotatef(xAngle, 1, 0, 0);
         gl.glRotatef(yAngle, 0, 1, 0);
         gl.glRotatef(zAngle, 0, 0, 1);		
-		//µ×Ãæ
+		//åº•é¢
 		gl.glPushMatrix();
 		gl.glRotatef(90, 1, 0, 0);
 		gl.glRotatef(180, 0, 0, 1);
 		bottomCircle.drawSelf(gl);
 		gl.glPopMatrix();
-		//²àÃæ
+		//ä¾§é¢
 		gl.glPushMatrix();
 		coneSide.drawSelf(gl);
 		gl.glPopMatrix();

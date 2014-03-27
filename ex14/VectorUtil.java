@@ -1,53 +1,53 @@
 package com.bn.game.chap11.ex14;
 
-//¼ÆËãÈı½ÇĞÎ·¨ÏòÁ¿µÄ¹¤¾ßÀà
+//è®¡ç®—ä¸‰è§’å½¢æ³•å‘é‡çš„å·¥å…·ç±»
 public class VectorUtil {
-	//¼ÆËãÈı½ÇĞÎ·¨ÏòÁ¿µÄ·½·¨
+	//è®¡ç®—ä¸‰è§’å½¢æ³•å‘é‡çš„æ–¹æ³•
 	public static float[] calTriangleNormal
-	(//Èı½ÇĞÎÈı¸ö¶¥µã×ø±ê£¬£¨ÒªÇóÒÔÄæÊ±Õë¾íÈÆ£©
+	(//ä¸‰è§’å½¢ä¸‰ä¸ªé¡¶ç‚¹åæ ‡ï¼Œï¼ˆè¦æ±‚ä»¥é€†æ—¶é’ˆå·ç»•ï¼‰
 			float x0,float y0,float z0,//A
 			float x1,float y1,float z1,//B
 			float x2,float y2,float z2 //C
 	)
 	{
-		float[] a={x1-x0, y1-y0, z1-z0};//ÏòÁ¿AB
-		float[] b={x2-x1, y2-y1, z2-z1};//ÏòÁ¿BC
+		float[] a={x1-x0, y1-y0, z1-z0};//å‘é‡AB
+		float[] b={x2-x1, y2-y1, z2-z1};//å‘é‡BC
 		/*
-		 * ¼ÆËãÈı½ÇĞÎµÄ·¨ÏòÁ¿£¬
-		 * ÏòÁ¿AB¡¢BC×ö²æ³Ë£¬
-		 * ÈôABCÈıµã°´ÄæÊ±Õë¾íÈÆ£¬
-		 * ÏòÁ¿ABºÍBCÊ×Î²ÏàÁ¬£¬
-		 * ÔòAB²æ³ËBCËùµÃ·¨ÏòÁ¿µÄ·½Ïò·ûºÏÓÒÊÖ¶¨Ôò
+		 * è®¡ç®—ä¸‰è§’å½¢çš„æ³•å‘é‡ï¼Œ
+		 * å‘é‡ABã€BCåšå‰ä¹˜ï¼Œ
+		 * è‹¥ABCä¸‰ç‚¹æŒ‰é€†æ—¶é’ˆå·ç»•ï¼Œ
+		 * å‘é‡ABå’ŒBCé¦–å°¾ç›¸è¿ï¼Œ
+		 * åˆ™ABå‰ä¹˜BCæ‰€å¾—æ³•å‘é‡çš„æ–¹å‘ç¬¦åˆå³æ‰‹å®šåˆ™
 		 */
 		float[] c=crossTwoVectors(a,b);
-		return normalizeVector(c);//·µ»Ø¹æ¸ñ»¯ºóµÄ·¨ÏòÁ¿
+		return normalizeVector(c);//è¿”å›è§„æ ¼åŒ–åçš„æ³•å‘é‡
 	}
-	//¼ÆËãÀâ×¶²àÃæ·¨ÏòÁ¿µÄ·½·¨
+	//è®¡ç®—æ£±é”¥ä¾§é¢æ³•å‘é‡çš„æ–¹æ³•
 	public static float[] calConeNormal
-	(//Èı½ÇĞÎÈı¸ö¶¥µã×ø±ê
-			float x0,float y0,float z0,//A£¬ÖĞĞÄµã
-			float x1,float y1,float z1,//B£¬µ×ÃæÔ²ÉÏÒ»µã
-			float x2,float y2,float z2 //C£¬¶¥µã
+	(//ä¸‰è§’å½¢ä¸‰ä¸ªé¡¶ç‚¹åæ ‡
+			float x0,float y0,float z0,//Aï¼Œä¸­å¿ƒç‚¹
+			float x1,float y1,float z1,//Bï¼Œåº•é¢åœ†ä¸Šä¸€ç‚¹
+			float x2,float y2,float z2 //Cï¼Œé¡¶ç‚¹
 	)
 	{
-		float[] a={x1-x0, y1-y0, z1-z0};//ÏòÁ¿AB
-		float[] b={x2-x1, y2-y1, z2-z1};//ÏòÁ¿BC
-		//ÏÈÇò´¹Ö±ÓÚÆ½ÃæABCµÄÏòÁ¿
+		float[] a={x1-x0, y1-y0, z1-z0};//å‘é‡AB
+		float[] b={x2-x1, y2-y1, z2-z1};//å‘é‡BC
+		//å…ˆçƒå‚ç›´äºå¹³é¢ABCçš„å‘é‡
 		float[] c=crossTwoVectors(a,b);
-		//½«bºÍc×ö²æ³Ë£¬µÃ³öËùÇòÏòÁ¿d
+		//å°†bå’Œcåšå‰ä¹˜ï¼Œå¾—å‡ºæ‰€çƒå‘é‡d
 		float[] d=crossTwoVectors(b,c);
-		return normalizeVector(d);//·µ»Ø¹æ¸ñ»¯ºóµÄ·¨ÏòÁ¿
+		return normalizeVector(d);//è¿”å›è§„æ ¼åŒ–åçš„æ³•å‘é‡
 	}
-	//½«Ò»¸öÏòÁ¿¹æ¸ñ»¯µÄ·½·¨
+	//å°†ä¸€ä¸ªå‘é‡è§„æ ¼åŒ–çš„æ–¹æ³•
 	public static float[] normalizeVector(float x, float y, float z){
 		float mod=module(x,y,z);
-		return new float[]{x/mod, y/mod, z/mod};//·µ»Ø¹æ¸ñ»¯ºóµÄÏòÁ¿
+		return new float[]{x/mod, y/mod, z/mod};//è¿”å›è§„æ ¼åŒ–åçš„å‘é‡
 	}
 	public static float[] normalizeVector(float [] vec){
 		float mod=module(vec);
-		return new float[]{vec[0]/mod, vec[1]/mod, vec[2]/mod};//·µ»Ø¹æ¸ñ»¯ºóµÄÏòÁ¿
+		return new float[]{vec[0]/mod, vec[1]/mod, vec[2]/mod};//è¿”å›è§„æ ¼åŒ–åçš„å‘é‡
 	}
-	//½«Ò»×éÏòÁ¿¹æ¸ñ»¯µÄ·½·¨£¬Êı×éÖĞÔªËØ¸öÊıÓ¦ÊÇ3µÄ±¶Êı
+	//å°†ä¸€ç»„å‘é‡è§„æ ¼åŒ–çš„æ–¹æ³•ï¼Œæ•°ç»„ä¸­å…ƒç´ ä¸ªæ•°åº”æ˜¯3çš„å€æ•°
 	public static void normalizeAllVectors(float[] allVectors){
 		for(int i=0;i<allVectors.length;i+=3){
 			float[] result=VectorUtil.normalizeVector(allVectors[i],allVectors[i+1],allVectors[i+2]);
@@ -56,19 +56,19 @@ public class VectorUtil {
 			allVectors[i+2]=result[2];
 		}
 	}
-	//ÇóÏòÁ¿µÄÄ£µÄ·½·¨
+	//æ±‚å‘é‡çš„æ¨¡çš„æ–¹æ³•
 	public static float module(float x, float y, float z){
 		return (float) Math.sqrt(x*x+y*y+z*z);
 	}
 	public static float module(float [] vec){
 		return (float) Math.sqrt(vec[0]*vec[0]+vec[1]*vec[1]+vec[2]*vec[2]);
 	}
-	//Á½¸öÏòÁ¿²æ³ËµÄ·½·¨
+	//ä¸¤ä¸ªå‘é‡å‰ä¹˜çš„æ–¹æ³•
 	public static float[] crossTwoVectors(float[] a, float[] b)
 	{
 		float x=a[1]*b[2]-a[2]*b[1];
 		float y=a[2]*b[0]-a[0]*b[2];
 		float z=a[0]*b[1]-a[1]*b[0];
-		return new float[]{x, y, z};//·µ»Ø·¨ÏòÁ¿
+		return new float[]{x, y, z};//è¿”å›æ³•å‘é‡
 	}
 }

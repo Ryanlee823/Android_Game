@@ -2,13 +2,13 @@ package com.bn.game.chap11.ex14;
 import javax.microedition.khronos.opengles.GL10;
 public class Cylinder
 {
-	Circle bottomCircle;//µ×Ô²
-	Circle topCircle;//¶¥Ô²
-	CylinderSide cylinderSide;//²àÃæ
-	float xAngle=0;//ÈÆxÖáĞı×ªµÄ½Ç¶È
-    float yAngle=0;//ÈÆyÖáĞı×ªµÄ½Ç¶È
-    float zAngle=0;//ÈÆzÖáĞı×ªµÄ½Ç¶È
-    float size;//³ß´ç
+	Circle bottomCircle;//åº•åœ†
+	Circle topCircle;//é¡¶åœ†
+	CylinderSide cylinderSide;//ä¾§é¢
+	float xAngle=0;//ç»•xè½´æ—‹è½¬çš„è§’åº¦
+    float yAngle=0;//ç»•yè½´æ—‹è½¬çš„è§’åº¦
+    float zAngle=0;//ç»•zè½´æ—‹è½¬çš„è§’åº¦
+    float size;//å°ºå¯¸
     float h;
 	public Cylinder(float scale,float r, float h, int n, 
 			int topTexId, int BottomTexId, int sideTexId)
@@ -16,7 +16,7 @@ public class Cylinder
 		topCircle=new Circle(scale,r,n, topTexId);
 		bottomCircle=new Circle(scale,r,n, BottomTexId);
 		cylinderSide=new CylinderSide(scale, r,  h, n, sideTexId);
-		// ³õÊ¼»¯Íê³ÉºóÔÙ¸Ä±ä¸÷Á¿µÄÖµ
+		// åˆå§‹åŒ–å®Œæˆåå†æ”¹å˜å„é‡çš„å€¼
 		size=Constant.UNIT_SIZE*scale;
 		this.h=h*size;
 	}
@@ -25,19 +25,19 @@ public class Cylinder
 		gl.glRotatef(xAngle, 1, 0, 0);
         gl.glRotatef(yAngle, 0, 1, 0);
         gl.glRotatef(zAngle, 0, 0, 1);		
-		//¶¥Ãæ
+		//é¡¶é¢
 		gl.glPushMatrix();
 		gl.glTranslatef(0, h, 0);
 		gl.glRotatef(-90, 1, 0, 0);
 		topCircle.drawSelf(gl);
 		gl.glPopMatrix();
-		//µ×Ãæ
+		//åº•é¢
 		gl.glPushMatrix();
 		gl.glRotatef(90, 1, 0, 0);
 		gl.glRotatef(180, 0, 0, 1);
 		bottomCircle.drawSelf(gl);
 		gl.glPopMatrix();
-		//²àÃæ
+		//ä¾§é¢
 		gl.glPushMatrix();
 		cylinderSide.drawSelf(gl);
 		gl.glPopMatrix();

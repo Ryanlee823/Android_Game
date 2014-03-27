@@ -8,23 +8,23 @@ public class Platform {
 	Quadrangle side1;
 	Quadrangle side2;
 	Quadrangle side3;
-    float xAngle=0;//ÈÆzÖáĞı×ªµÄ½Ç¶È
-    float yAngle=0;//ÈÆyÖáĞı×ªµÄ½Ç¶È
-    float zAngle=0;//ÈÆzÖáĞı×ªµÄ½Ç¶È
+    float xAngle=0;//ç»•zè½´æ—‹è½¬çš„è§’åº¦
+    float yAngle=0;//ç»•yè½´æ—‹è½¬çš„è§’åº¦
+    float zAngle=0;//ç»•zè½´æ—‹è½¬çš„è§’åº¦
     float h;
     float scale;
 	public Platform(
-			float scale,//´óĞ¡
-			float aBottom, float bBottom, //µ×Ãæ³¤¿í
-			float aTop, float bTop, //¶¥Ãæ³¤¿í
-			float h, //¸ß¶È
-			int topTexId, int bottomTexId, int sideTexId,//µÄÎÆÀíid
-			int nS, int nT//¶¥ÃæµÄĞĞÁĞÊı
+			float scale,//å¤§å°
+			float aBottom, float bBottom, //åº•é¢é•¿å®½
+			float aTop, float bTop, //é¡¶é¢é•¿å®½
+			float h, //é«˜åº¦
+			int topTexId, int bottomTexId, int sideTexId,//çš„çº¹ç†id
+			int nS, int nT//é¡¶é¢çš„è¡Œåˆ—æ•°
 			) 
-	{	//³õÊ¼»¯¸÷Á¿£¬²»¸Ä±äÔ­Ê¼Êı¾İ
+	{	//åˆå§‹åŒ–å„é‡ï¼Œä¸æ”¹å˜åŸå§‹æ•°æ®
 		this.scale=scale*Constant.UNIT_SIZE;
 		this.h=this.scale*h;
-		//8¸ö¶¥µã×ø±ê
+		//8ä¸ªé¡¶ç‚¹åæ ‡
 		float x0=-aBottom/2; float y0=0; float z0=-bBottom/2;
 		float x1=-aBottom/2; float y1=0; float z1=bBottom/2; 
 		float x2=aBottom/2; float y2=0; float z2=bBottom/2; 
@@ -92,7 +92,7 @@ public class Platform {
     public void drawSelf(GL10 gl)
     {
     	gl.glPushMatrix();
-    	//ÈÆÖáĞı×ª
+    	//ç»•è½´æ—‹è½¬
         gl.glRotatef(xAngle, 1, 0, 0);
         gl.glRotatef(yAngle, 0, 1, 0);
         gl.glRotatef(zAngle, 0, 0, 1);

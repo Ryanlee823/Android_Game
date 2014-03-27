@@ -15,57 +15,57 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 
 public class MyGLView extends GLSurfaceView{
-	private final float TOUCH_SCALE_FACTOR = 180.0f/1000;//½Ç¶ÈËõ·Å±ÈÀı
-	private SceneRenderer renderer;//³¡¾°äÖÈ¾Æ÷
-	private float previousX;//ÉÏ´ÎµÄ´¥¿ØÎ»ÖÃ
+	private final float TOUCH_SCALE_FACTOR = 180.0f/1000;//è§’åº¦ç¼©æ”¾æ¯”ä¾‹
+	private SceneRenderer renderer;//åœºæ™¯æ¸²æŸ“å™¨
+	private float previousX;//ä¸Šæ¬¡çš„è§¦æ§ä½ç½®
 	private float previousY; 
-	private float cameraX=0;//ÉãÏñ»úµÄÎ»ÖÃ
+	private float cameraX=0;//æ‘„åƒæœºçš„ä½ç½®
 	private float cameraY=0;
 	private float cameraZ=0;
-	private float targetX=0;//¿´µã
+	private float targetX=0;//çœ‹ç‚¹
 	private float targetY=0;
 	private float targetZ=-4;
-	private float sightDis=40;//ÉãÏñ»úºÍÄ¿±êµÄ¾àÀë
-	private float angdegElevation=45;//Ñö½Ç
-	private float angdegAzimuth=90;//·½Î»½Ç
-	//¹ØÓÚµÆ¹âĞı×ªµÄÁ¿
-	float angdegLight=0;//µÆ¹âĞı×ªµÄ½Ç¶È
-	float angdegZ=45;//µÆÔÚxzÃæÉÏµÄÍ¶Ó°ÓëzÖáµÄ¼Ğ½Ç
+	private float sightDis=40;//æ‘„åƒæœºå’Œç›®æ ‡çš„è·ç¦»
+	private float angdegElevation=45;//ä»°è§’
+	private float angdegAzimuth=90;//æ–¹ä½è§’
+	//å…³äºç¯å…‰æ—‹è½¬çš„é‡
+	float angdegLight=0;//ç¯å…‰æ—‹è½¬çš„è§’åº¦
+	float angdegZ=45;//ç¯åœ¨xzé¢ä¸Šçš„æŠ•å½±ä¸zè½´çš„å¤¹è§’
 	float rLight=10;
-	LightRatateThread lightRatateThread;//Ğı×ªµÆµÄÏß³Ì
+	LightRatateThread lightRatateThread;//æ—‹è½¬ç¯çš„çº¿ç¨‹
 	public MyGLView(Context context) {
 		super(context);
-		renderer=new SceneRenderer();//´´½¨äÖÈ¾Æ÷
-		this.setRenderer(renderer);//ÉèÖÃäÖÈ¾Æ÷
-		this.setRenderMode(GLSurfaceView.RENDERMODE_CONTINUOUSLY);//ÉèÖÃäÖÈ¾Ä£Ê½ÎªÖ÷¶¯äÖÈ¾   
+		renderer=new SceneRenderer();//åˆ›å»ºæ¸²æŸ“å™¨
+		this.setRenderer(renderer);//è®¾ç½®æ¸²æŸ“å™¨
+		this.setRenderMode(GLSurfaceView.RENDERMODE_CONTINUOUSLY);//è®¾ç½®æ¸²æŸ“æ¨¡å¼ä¸ºä¸»åŠ¨æ¸²æŸ“   
 	}
-	//´¥ÃşÊÂ¼ş»Øµ÷·½·¨
+	//è§¦æ‘¸äº‹ä»¶å›è°ƒæ–¹æ³•
     @Override 
     public boolean onTouchEvent(MotionEvent e) {
         float y = e.getY();
         float x = e.getX();
         switch (e.getAction()) {
         case MotionEvent.ACTION_MOVE:
-            float dy = y - previousY;//¼ÆËã´¥¿Ø±ÊYÎ»ÒÆ
-            float dx = x - previousX;//¼ÆËã´¥¿Ø±ÊYÎ»ÒÆ
-            angdegAzimuth += dx * TOUCH_SCALE_FACTOR;//ÉèÖÃÑØyÖáĞı×ª½Ç¶È
-            angdegElevation+= dy * TOUCH_SCALE_FACTOR;//ÉèÖÃÑØxÖáĞı×ª½Ç¶È
-            requestRender();//ÖØ»æ»­Ãæ
+            float dy = y - previousY;//è®¡ç®—è§¦æ§ç¬”Yä½ç§»
+            float dx = x - previousX;//è®¡ç®—è§¦æ§ç¬”Yä½ç§»
+            angdegAzimuth += dx * TOUCH_SCALE_FACTOR;//è®¾ç½®æ²¿yè½´æ—‹è½¬è§’åº¦
+            angdegElevation+= dy * TOUCH_SCALE_FACTOR;//è®¾ç½®æ²¿xè½´æ—‹è½¬è§’åº¦
+            requestRender();//é‡ç»˜ç”»é¢
         }
-        previousY = y;//¼ÇÂ¼´¥¿Ø±ÊÎ»ÖÃ
-        previousX = x;//¼ÇÂ¼´¥¿Ø±ÊÎ»ÖÃ
+        previousY = y;//è®°å½•è§¦æ§ç¬”ä½ç½®
+        previousX = x;//è®°å½•è§¦æ§ç¬”ä½ç½®
         return true;
     }
 	private class SceneRenderer implements GLSurfaceView.Renderer {
-		Cube cube;//Á¢·½Ìå
+		Cube cube;//ç«‹æ–¹ä½“
 		private int[] textureIds;
-		Cylinder cylinder;//Ô²Öù
-		Cone cone;//Ô²×¶
-		Ball ball;//Çò
-		Spheroid spheroid;//ÍÖÇò
-		Capsule capsule;//½ºÄÒÌå
-		Platform platform;//ÌİÌ¨
-		RegularPyramid regularPyramid;//ÕıÀâ×¶
+		Cylinder cylinder;//åœ†æŸ±
+		Cone cone;//åœ†é”¥
+		Ball ball;//çƒ
+		Spheroid spheroid;//æ¤­çƒ
+		Capsule capsule;//èƒ¶å›Šä½“
+		Platform platform;//æ¢¯å°
+		RegularPyramid regularPyramid;//æ­£æ£±é”¥
 		
 		private int coneSideTexId;
 		private int ballSideTexId;
@@ -80,76 +80,76 @@ public class MyGLView extends GLSurfaceView{
 		public SceneRenderer(){}
 		@Override
 		public void onDrawFrame(GL10 gl) {
-        	gl.glClear(GL10.GL_COLOR_BUFFER_BIT | GL10.GL_DEPTH_BUFFER_BIT);//Çå³ıÑÕÉ«ÓëÉî¶È»º´æ
-            gl.glMatrixMode(GL10.GL_MODELVIEW);//ÉèÖÃµ±Ç°¾ØÕóÎªÄ£Ê½¾ØÕó
-            gl.glLoadIdentity();//ÉèÖÃµ±Ç°¾ØÕóÎªµ¥Î»¾ØÕó  
-            double angradElevation=Math.toRadians(angdegElevation);//Ñö½Ç£¨»¡¶È£©
-        	double angradAzimuth=Math.toRadians(angdegAzimuth);//·½Î»½Ç
+        	gl.glClear(GL10.GL_COLOR_BUFFER_BIT | GL10.GL_DEPTH_BUFFER_BIT);//æ¸…é™¤é¢œè‰²ä¸æ·±åº¦ç¼“å­˜
+            gl.glMatrixMode(GL10.GL_MODELVIEW);//è®¾ç½®å½“å‰çŸ©é˜µä¸ºæ¨¡å¼çŸ©é˜µ
+            gl.glLoadIdentity();//è®¾ç½®å½“å‰çŸ©é˜µä¸ºå•ä½çŸ©é˜µ  
+            double angradElevation=Math.toRadians(angdegElevation);//ä»°è§’ï¼ˆå¼§åº¦ï¼‰
+        	double angradAzimuth=Math.toRadians(angdegAzimuth);//æ–¹ä½è§’
             cameraX=(float) (targetX+sightDis*Math.cos(angradElevation)*Math.cos(angradAzimuth));
             cameraY=(float) (targetY+sightDis*Math.sin(angradElevation));
             cameraZ=(float) (targetZ+sightDis*Math.cos(angradElevation)*Math.sin(angradAzimuth));
-            GLU.gluLookAt(//ÉèÖÃcameraÎ»ÖÃ
+            GLU.gluLookAt(//è®¾ç½®cameraä½ç½®
             		gl, 
-            		cameraX, //ÈËÑÛÎ»ÖÃµÄX
-            		cameraY, //ÈËÑÛÎ»ÖÃµÄY
-            		cameraZ, //ÈËÑÛÎ»ÖÃµÄZ
-            		targetX, //ÈËÑÛÇò¿´µÄµãX
-            		targetY, //ÈËÑÛÇò¿´µÄµãY
-            		targetZ, //ÈËÑÛÇò¿´µÄµãZ
-            		0,  //Í·µÄ³¯Ïò
+            		cameraX, //äººçœ¼ä½ç½®çš„X
+            		cameraY, //äººçœ¼ä½ç½®çš„Y
+            		cameraZ, //äººçœ¼ä½ç½®çš„Z
+            		targetX, //äººçœ¼çƒçœ‹çš„ç‚¹X
+            		targetY, //äººçœ¼çƒçœ‹çš„ç‚¹Y
+            		targetZ, //äººçœ¼çƒçœ‹çš„ç‚¹Z
+            		0,  //å¤´çš„æœå‘
             		1, 
             		0
             );
-            //ÉèÖÃ¶¨Î»¹â
+            //è®¾ç½®å®šä½å…‰
             double angradLight=Math.toRadians(angdegLight);
             double angradZ=Math.toRadians(angdegZ);
             float[] positionParams={
             		(float) (-rLight*Math.cos(angradLight)*Math.sin(angradZ)),
             		(float) (rLight*Math.sin(angradLight)),
             		(float) (rLight*Math.cos(angradLight)*Math.cos(angradZ)),
-            		1};//ÉèÖÃ¶¨Î»¹â
+            		1};//è®¾ç½®å®šä½å…‰
     		gl.glLightfv(GL10.GL_LIGHT0, GL10.GL_POSITION, positionParams,0);
             gl.glTranslatef(0, 0f, -6f);
-            //Á¢·½Ìå
+            //ç«‹æ–¹ä½“
             gl.glPushMatrix();
             gl.glTranslatef(-4.4f, cube.b/2, 1.4f);
             cube.drawSelf(gl);
             gl.glPopMatrix();
-            //Ô²Öù
+            //åœ†æŸ±
             gl.glPushMatrix();
             gl.glTranslatef(1.5f,0, -4.5f);
             cylinder.drawSelf(gl);
             gl.glPopMatrix();
-            //Ô²×¶
+            //åœ†é”¥
             gl.glPushMatrix();
             gl.glTranslatef(4.4f,0, -1.5f);
             cone.drawSelf(gl);
-            gl.glTranslatef(0,cone.h, 0);//ÍÆÒÆ
-            gl.glRotatef(180, 1, 0, 0);//Ğı×ª
-            cone.drawSelf(gl);//ÔÙ»æÖÆÒ»´ÎÔ²×¶
+            gl.glTranslatef(0,cone.h, 0);//æ¨ç§»
+            gl.glRotatef(180, 1, 0, 0);//æ—‹è½¬
+            cone.drawSelf(gl);//å†ç»˜åˆ¶ä¸€æ¬¡åœ†é”¥
             gl.glPopMatrix();
-            //Çò
+            //çƒ
             gl.glPushMatrix();
             gl.glTranslatef(-1.5f,ball.r, 4.3f);
             ball.drawSelf(gl);
             gl.glPopMatrix();
-            //ÍÖÇò
+            //æ¤­çƒ
             gl.glPushMatrix();
             gl.glTranslatef(4.2f,spheroid.b, 4.2f);
             gl.glRotatef(45, 0, 1, 0);
             spheroid.drawSelf(gl);
             gl.glPopMatrix();
-            //½ºÄÒÌå
+            //èƒ¶å›Šä½“
             gl.glPushMatrix();
             gl.glTranslatef(-1.3f,capsule.bBottom,-1.3f);
             capsule.drawSelf(gl);
             gl.glPopMatrix();
-            //ÌİÌ¨
+            //æ¢¯å°
             gl.glPushMatrix();
             gl.glTranslatef(0,-platform.h,0);
             platform.drawSelf(gl);
             gl.glPopMatrix();
-            //ÕıÀâ×¶
+            //æ­£æ£±é”¥
             gl.glPushMatrix();
             gl.glTranslatef(1.5f,0,1.4f);
             regularPyramid.drawSelf(gl);
@@ -157,27 +157,27 @@ public class MyGLView extends GLSurfaceView{
 		}
 		@Override
 		public void onSurfaceChanged(GL10 gl, int width, int height) {           
-        	gl.glViewport(0, 0, width, height); //ÉèÖÃÊÓ´°´óĞ¡¼°Î»ÖÃ         	
-            gl.glMatrixMode(GL10.GL_PROJECTION);//ÉèÖÃµ±Ç°¾ØÕóÎªÍ¶Ó°¾ØÕó            
-            gl.glLoadIdentity();//ÉèÖÃµ±Ç°¾ØÕóÎªµ¥Î»¾ØÕó            
-            float ratio = (float) width / height;//¼ÆËãÍ¸ÊÓÍ¶Ó°µÄ±ÈÀı            
-            gl.glFrustumf(-ratio, ratio, -1, 1, 6f, 100);//µ÷ÓÃ´Ë·½·¨¼ÆËã²úÉúÍ¸ÊÓÍ¶Ó°¾ØÕó
+        	gl.glViewport(0, 0, width, height); //è®¾ç½®è§†çª—å¤§å°åŠä½ç½®         	
+            gl.glMatrixMode(GL10.GL_PROJECTION);//è®¾ç½®å½“å‰çŸ©é˜µä¸ºæŠ•å½±çŸ©é˜µ            
+            gl.glLoadIdentity();//è®¾ç½®å½“å‰çŸ©é˜µä¸ºå•ä½çŸ©é˜µ            
+            float ratio = (float) width / height;//è®¡ç®—é€è§†æŠ•å½±çš„æ¯”ä¾‹            
+            gl.glFrustumf(-ratio, ratio, -1, 1, 6f, 100);//è°ƒç”¨æ­¤æ–¹æ³•è®¡ç®—äº§ç”Ÿé€è§†æŠ•å½±çŸ©é˜µ
             
-            lightRatateThread=new LightRatateThread(MyGLView.this);//´´½¨²¢¿ªÆôÏß³Ì
+            lightRatateThread=new LightRatateThread(MyGLView.this);//åˆ›å»ºå¹¶å¼€å¯çº¿ç¨‹
             lightRatateThread.start();
 		}
 		@Override
 		public void onSurfaceCreated(GL10 gl, EGLConfig config) {            
-        	gl.glDisable(GL10.GL_DITHER);//¹Ø±Õ¿¹¶¶¶¯         	
-            gl.glHint(GL10.GL_PERSPECTIVE_CORRECTION_HINT,GL10.GL_FASTEST);//ÉèÖÃÌØ¶¨HintÏîÄ¿µÄÄ£Ê½          
-            gl.glClearColor(0,0,0,0); //ÉèÖÃÆÁÄ»±³¾°É«ºÚÉ«RGBA    
-            gl.glEnable(GL10.GL_CULL_FACE);//ÉèÖÃÎª´ò¿ª±³Ãæ¼ô²Ã
-            gl.glEnable(GL10.GL_DEPTH_TEST); //ÆôÓÃÉî¶È²âÊÔ       
+        	gl.glDisable(GL10.GL_DITHER);//å…³é—­æŠ—æŠ–åŠ¨         	
+            gl.glHint(GL10.GL_PERSPECTIVE_CORRECTION_HINT,GL10.GL_FASTEST);//è®¾ç½®ç‰¹å®šHinté¡¹ç›®çš„æ¨¡å¼          
+            gl.glClearColor(0,0,0,0); //è®¾ç½®å±å¹•èƒŒæ™¯è‰²é»‘è‰²RGBA    
+            gl.glEnable(GL10.GL_CULL_FACE);//è®¾ç½®ä¸ºæ‰“å¼€èƒŒé¢å‰ªè£
+            gl.glEnable(GL10.GL_DEPTH_TEST); //å¯ç”¨æ·±åº¦æµ‹è¯•       
             
-            gl.glEnable(GL10.GL_LIGHTING); //ÔÊĞí¹âÕÕ
-            initGreenLight(gl);//³õÊ¼»¯µÆ
-            initMaterial(gl);//³õÊ¼»¯²ÄÖÊ
-            //³õÊ¼»¯ÎÆÀí
+            gl.glEnable(GL10.GL_LIGHTING); //å…è®¸å…‰ç…§
+            initGreenLight(gl);//åˆå§‹åŒ–ç¯
+            initMaterial(gl);//åˆå§‹åŒ–æè´¨
+            //åˆå§‹åŒ–çº¹ç†
             textureIds=new int[]{
             	initTexture(gl,R.drawable.wall),
             	initTexture(gl,R.drawable.wall),
@@ -186,11 +186,11 @@ public class MyGLView extends GLSurfaceView{
             	initTexture(gl,R.drawable.wall),
             	initTexture(gl,R.drawable.wall)
             };
-            //ÎÆÀíid³õÊ¼»¯  
+            //çº¹ç†idåˆå§‹åŒ–  
             sideTexIdPlat=initTexture(gl,R.drawable.side);    
             bottomTexIdPlat=initTexture(gl,R.drawable.top);
             topTexIdPlat=initTexture(gl,R.drawable.top);
-            //²àÃæid
+            //ä¾§é¢id
             coneSideTexId=initTexture(gl,R.drawable.cone);
     		ballSideTexId=initTexture(gl,R.drawable.ball);
     		cylinderSideTexId=initTexture(gl,R.drawable.cylinder);
@@ -198,23 +198,23 @@ public class MyGLView extends GLSurfaceView{
     		capsuleSideTexId=initTexture(gl,R.drawable.capsule);
     		pyramidSideTexId=initTexture(gl,R.drawable.pyramid);
 
-            //´´½¨¸÷¸ö¼¸ºÎÌå
-            cube=new Cube(1.4f,new float[]{1,1.2f,1.4f},textureIds);//Á¢·½Ìå
-            cylinder=new Cylinder(1.5f,0.4f,1.2f,40,//Ô²Öù
+            //åˆ›å»ºå„ä¸ªå‡ ä½•ä½“
+            cube=new Cube(1.4f,new float[]{1,1.2f,1.4f},textureIds);//ç«‹æ–¹ä½“
+            cylinder=new Cylinder(1.5f,0.4f,1.2f,40,//åœ†æŸ±
             		cylinderSideTexId,cylinderSideTexId,cylinderSideTexId);
-            cone=new Cone(2.5f,0.4f,0.9f,30,//Ô²×¶
+            cone=new Cone(2.5f,0.4f,0.9f,30,//åœ†é”¥
             		coneSideTexId,coneSideTexId);
-            ball=new Ball(1f,1f,30,30,ballSideTexId);//Çò
-            spheroid=new Spheroid(0.75f,//ÍÖÇò
+            ball=new Ball(1f,1f,30,30,ballSideTexId);//çƒ
+            spheroid=new Spheroid(0.75f,//æ¤­çƒ
             		1.4f,0.6f,1f,
             		30,30,spheroidSideTexId);
-            capsule=new Capsule(//½ºÄÒÌå
+            capsule=new Capsule(//èƒ¶å›Šä½“
             		1.5f,
             		0.4f,0.8f,
             		0.4f,0.4f,
             		40,40,
             		capsuleSideTexId);
-            platform=new Platform(//ÌİÌ¨
+            platform=new Platform(//æ¢¯å°
             		3f,
             		4,4,
             		3,3,
@@ -222,58 +222,58 @@ public class MyGLView extends GLSurfaceView{
             		topTexIdPlat,bottomTexIdPlat,sideTexIdPlat,
             		2,2
             		);
-            regularPyramid=new RegularPyramid(2.5f,0.4f,1.2f,6,//ÕıÀâ×¶
+            regularPyramid=new RegularPyramid(2.5f,0.4f,1.2f,6,//æ­£æ£±é”¥
             		pyramidSideTexId,pyramidSideTexId);
 		}
 	}//SceneRenderer
-	//³õÊ¼»¯ÎÆÀí
+	//åˆå§‹åŒ–çº¹ç†
 	public int initTexture(GL10 gl,int drawableId){
-		//Éú³ÉÎÆÀíID
+		//ç”Ÿæˆçº¹ç†ID
 		int[] textures = new int[1];
-		gl.glGenTextures(1, textures, 0);//Éú³ÉÒ»¸öÎÆÀíid·ÅÔÚtexturesÊı×éÖĞµÄ0Î»ÖÃ
-		int currTextureId=textures[0];   //»ñÈ¡Éú³ÉµÄÎÆÀíid 
-		gl.glBindTexture(GL10.GL_TEXTURE_2D, currTextureId);//°ó¶¨¸ÃÎÆÀíid£¬ºóÃæµÄ²Ù×÷¶¼ÊÇÕë¶Ô¸Ãid
-		//ÉèÖÃMIN_FILTERÓëMAG_FILTERÎªMIPMAPÎÆÀí¹ıÂË·½Ê½
+		gl.glGenTextures(1, textures, 0);//ç”Ÿæˆä¸€ä¸ªçº¹ç†idæ”¾åœ¨texturesæ•°ç»„ä¸­çš„0ä½ç½®
+		int currTextureId=textures[0];   //è·å–ç”Ÿæˆçš„çº¹ç†id 
+		gl.glBindTexture(GL10.GL_TEXTURE_2D, currTextureId);//ç»‘å®šè¯¥çº¹ç†idï¼Œåé¢çš„æ“ä½œéƒ½æ˜¯é’ˆå¯¹è¯¥id
+		//è®¾ç½®MIN_FILTERä¸MAG_FILTERä¸ºMIPMAPçº¹ç†è¿‡æ»¤æ–¹å¼
 		gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MIN_FILTER,GL10.GL_LINEAR_MIPMAP_NEAREST);
 		gl.glTexParameterf(GL10.GL_TEXTURE_2D,GL10.GL_TEXTURE_MAG_FILTER, GL10.GL_LINEAR_MIPMAP_LINEAR);
-		//Éú³ÉMIPMAPÎÆÀí
+		//ç”ŸæˆMIPMAPçº¹ç†
 		((GL11)gl).glTexParameterf(GL10.GL_TEXTURE_2D,GL11.GL_GENERATE_MIPMAP, GL10.GL_TRUE);
-		//ÉèÖÃÎÆÀíÀ­Éì·½Ê½ÎªREPEAT 
+		//è®¾ç½®çº¹ç†æ‹‰ä¼¸æ–¹å¼ä¸ºREPEAT 
         gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_WRAP_S,GL10.GL_REPEAT);
         gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_WRAP_T,GL10.GL_REPEAT);
-        InputStream is = this.getResources().openRawResource(drawableId);//»ñÈ¡Í¼Æ¬×ÊÔ´µÄÊäÈëÁ÷
+        InputStream is = this.getResources().openRawResource(drawableId);//è·å–å›¾ç‰‡èµ„æºçš„è¾“å…¥æµ
         Bitmap bitmapTmp; 
         try{
-        	bitmapTmp = BitmapFactory.decodeStream(is);//Í¨¹ıÊäÈëÁ÷Éú³ÉÎ»Í¼
+        	bitmapTmp = BitmapFactory.decodeStream(is);//é€šè¿‡è¾“å…¥æµç”Ÿæˆä½å›¾
         } 
         finally{
             try {
-                is.close();//¹Ø±ÕÁ÷
+                is.close();//å…³é—­æµ
             }catch(IOException e){
-                e.printStackTrace();//´òÓ¡Òì³£
+                e.printStackTrace();//æ‰“å°å¼‚å¸¸
             }
         }
-        GLUtils.texImage2D(GL10.GL_TEXTURE_2D, 0, bitmapTmp, 0);//×Ô¶¯ÉèÖÃÍ¼Æ¬µÄ¸ñÊ½ºÍÀàĞÍ
-        bitmapTmp.recycle(); //»ØÊÕÍ¼Æ¬×ÊÔ´
+        GLUtils.texImage2D(GL10.GL_TEXTURE_2D, 0, bitmapTmp, 0);//è‡ªåŠ¨è®¾ç½®å›¾ç‰‡çš„æ ¼å¼å’Œç±»å‹
+        bitmapTmp.recycle(); //å›æ”¶å›¾ç‰‡èµ„æº
         return currTextureId;
 	}
-	private void initGreenLight(GL10 gl){//³õÊ¼»¯µÆµÄ·½·¨
-        gl.glEnable(GL10.GL_LIGHT0);//´ò¿ª0ºÅµÆ 
-        float[] ambientParams={0.6f,0.6f,0.6f,1.0f};//¹â²ÎÊı RGBA
-        gl.glLightfv(GL10.GL_LIGHT0, GL10.GL_AMBIENT, ambientParams,0); //»·¾³¹âÉèÖÃ   
-        float[] diffuseParams={1.0f,1.0f,1.0f,1.0f};//¹â²ÎÊı RGBA
-        gl.glLightfv(GL10.GL_LIGHT0, GL10.GL_DIFFUSE, diffuseParams,0); //É¢Éä¹âÉèÖÃ 
-        float[] specularParams={1.0f,1.0f,1.0f,1.0f};//¹â²ÎÊı RGBA
-        gl.glLightfv(GL10.GL_LIGHT0, GL10.GL_SPECULAR, specularParams,0);//·´Éä¹âÉèÖÃ    
+	private void initGreenLight(GL10 gl){//åˆå§‹åŒ–ç¯çš„æ–¹æ³•
+        gl.glEnable(GL10.GL_LIGHT0);//æ‰“å¼€0å·ç¯ 
+        float[] ambientParams={0.6f,0.6f,0.6f,1.0f};//å…‰å‚æ•° RGBA
+        gl.glLightfv(GL10.GL_LIGHT0, GL10.GL_AMBIENT, ambientParams,0); //ç¯å¢ƒå…‰è®¾ç½®   
+        float[] diffuseParams={1.0f,1.0f,1.0f,1.0f};//å…‰å‚æ•° RGBA
+        gl.glLightfv(GL10.GL_LIGHT0, GL10.GL_DIFFUSE, diffuseParams,0); //æ•£å°„å…‰è®¾ç½® 
+        float[] specularParams={1.0f,1.0f,1.0f,1.0f};//å…‰å‚æ•° RGBA
+        gl.glLightfv(GL10.GL_LIGHT0, GL10.GL_SPECULAR, specularParams,0);//åå°„å…‰è®¾ç½®    
 	}
-	private void initMaterial(GL10 gl){//³õÊ¼»¯²ÄÖÊµÄ·½·¨
-        float ambientMaterial[] = {0.4f, 0.4f, 0.4f, 1.0f};//»·¾³¹âÎª°×É«²ÄÖÊ
+	private void initMaterial(GL10 gl){//åˆå§‹åŒ–æè´¨çš„æ–¹æ³•
+        float ambientMaterial[] = {0.4f, 0.4f, 0.4f, 1.0f};//ç¯å¢ƒå…‰ä¸ºç™½è‰²æè´¨
         gl.glMaterialfv(GL10.GL_FRONT_AND_BACK, GL10.GL_AMBIENT, ambientMaterial,0);
         float diffuseMaterial[] = {1.0f, 1.0f, 1.0f, 1.0f};
-        gl.glMaterialfv(GL10.GL_FRONT_AND_BACK, GL10.GL_DIFFUSE, diffuseMaterial,0);//É¢Éä¹âÎª°×É«²ÄÖÊ
+        gl.glMaterialfv(GL10.GL_FRONT_AND_BACK, GL10.GL_DIFFUSE, diffuseMaterial,0);//æ•£å°„å…‰ä¸ºç™½è‰²æè´¨
         float specularMaterial[] = {1.0f, 1.0f, 1.0f, 1.0f};
-        gl.glMaterialfv(GL10.GL_FRONT_AND_BACK, GL10.GL_SPECULAR, specularMaterial,0);//¸ß¹â²ÄÖÊÎª°×É«
-        float shininessMaterial[] = {1.5f}; //¸ß¹â·´ÉäÇøÓò
+        gl.glMaterialfv(GL10.GL_FRONT_AND_BACK, GL10.GL_SPECULAR, specularMaterial,0);//é«˜å…‰æè´¨ä¸ºç™½è‰²
+        float shininessMaterial[] = {1.5f}; //é«˜å…‰åå°„åŒºåŸŸ
         gl.glMaterialfv(GL10.GL_FRONT_AND_BACK, GL10.GL_SHININESS, shininessMaterial,0);
 	}
 	@Override

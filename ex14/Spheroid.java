@@ -4,23 +4,23 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 import javax.microedition.khronos.opengles.GL10;
-//¶¥µã·¨»­Ô²£¬²»ÏŞÖÆ¶¥µãÊı
+//é¡¶ç‚¹æ³•ç”»åœ†ï¼Œä¸é™åˆ¶é¡¶ç‚¹æ•°
 public class Spheroid {
-	private FloatBuffer   vertexBuffer;//¶¥µã×ø±êÊı¾İ»º³å
-	private FloatBuffer   textureBuffer;//¶¥µãÎÆÀíÊı¾İ»º³å
-	private FloatBuffer   normalBuffer;//¶¥µã·¨ÏòÁ¿Êı¾İ»º³å
-    int vCount=0;//¶¥µã¸öÊı
-    float size;//³ß´ç
-    float angdegColSpan;//Çò×İÏòÇĞ·Ö½Ç¶È
-    float angdegRowSpan;//ÇòºáÏòÇĞ·Ö½Ç¶È
-    float xAngle=0;//ÈÆzÖáĞı×ªµÄ½Ç¶È
-    float yAngle=0;//ÈÆyÖáĞı×ªµÄ½Ç¶È
-    float zAngle=0;//ÈÆzÖáĞı×ªµÄ½Ç¶È
-    int textureId;//ÎÆÀíid
+	private FloatBuffer   vertexBuffer;//é¡¶ç‚¹åæ ‡æ•°æ®ç¼“å†²
+	private FloatBuffer   textureBuffer;//é¡¶ç‚¹çº¹ç†æ•°æ®ç¼“å†²
+	private FloatBuffer   normalBuffer;//é¡¶ç‚¹æ³•å‘é‡æ•°æ®ç¼“å†²
+    int vCount=0;//é¡¶ç‚¹ä¸ªæ•°
+    float size;//å°ºå¯¸
+    float angdegColSpan;//çƒçºµå‘åˆ‡åˆ†è§’åº¦
+    float angdegRowSpan;//çƒæ¨ªå‘åˆ‡åˆ†è§’åº¦
+    float xAngle=0;//ç»•zè½´æ—‹è½¬çš„è§’åº¦
+    float yAngle=0;//ç»•yè½´æ—‹è½¬çš„è§’åº¦
+    float zAngle=0;//ç»•zè½´æ—‹è½¬çš„è§’åº¦
+    int textureId;//çº¹ç†id
     float b;
-	public Spheroid(float scale, float a, float b, float c, int nCol ,int nRow, int textureId) {//´óĞ¡£¬°ë¾¶£¬¸ß¶È£¬±ßÊı£¬ÎÆÀíid
+	public Spheroid(float scale, float a, float b, float c, int nCol ,int nRow, int textureId) {//å¤§å°ï¼ŒåŠå¾„ï¼Œé«˜åº¦ï¼Œè¾¹æ•°ï¼Œçº¹ç†id
 		this.textureId=textureId;
-		//¸Ä±ä³ß´ç
+		//æ”¹å˜å°ºå¯¸
 		size=Constant.UNIT_SIZE*scale;
 		a*=size;
 		b*=size;
@@ -28,129 +28,129 @@ public class Spheroid {
 		this.b=b;
 		angdegColSpan=360.0f/nCol;
 		angdegRowSpan=180.0f/nRow;
-		vCount=3*nCol*nRow*2;//¶¥µã¸öÊı£¬¹²ÓĞnColumn*nRow*2¸öÈı½ÇĞÎ£¬Ã¿¸öÈı½ÇĞÎ¶¼ÓĞÈı¸ö¶¥µã
-		//×ø±êÊı¾İ³õÊ¼»¯
+		vCount=3*nCol*nRow*2;//é¡¶ç‚¹ä¸ªæ•°ï¼Œå…±æœ‰nColumn*nRow*2ä¸ªä¸‰è§’å½¢ï¼Œæ¯ä¸ªä¸‰è§’å½¢éƒ½æœ‰ä¸‰ä¸ªé¡¶ç‚¹
+		//åæ ‡æ•°æ®åˆå§‹åŒ–
 		float[] vertices=new float[vCount*3];
-		float[] textures=new float[vCount*2];//¶¥µãÎÆÀíS¡¢T×ø±êÖµÊı×é
-		//×ø±êÊı¾İ³õÊ¼»¯
+		float[] textures=new float[vCount*2];//é¡¶ç‚¹çº¹ç†Sã€Tåæ ‡å€¼æ•°ç»„
+		//åæ ‡æ•°æ®åˆå§‹åŒ–
 		int count=0;
 		int stCount=0;
 		for(float angdegCol=0;Math.ceil(angdegCol)<360;angdegCol+=angdegColSpan)
-		{//---¾­¶È
-			double angradCol=Math.toRadians(angdegCol);//µ±Ç°ÁĞ»¡¶È
-			double angradColNext=Math.toRadians(angdegCol+angdegColSpan);//ÏÂÒ»ÁĞ»¡¶È
+		{//---ç»åº¦
+			double angradCol=Math.toRadians(angdegCol);//å½“å‰åˆ—å¼§åº¦
+			double angradColNext=Math.toRadians(angdegCol+angdegColSpan);//ä¸‹ä¸€åˆ—å¼§åº¦
 			for(float angdegRow=-90;Math.ceil(angdegRow)<90;angdegRow+=angdegRowSpan)
-			{//---Î³¶È
-				double angradRow=Math.toRadians(angdegRow);//µ±Ç°ĞĞ»¡¶È
-				double angradRowNext=Math.toRadians(angdegRow+angdegRowSpan);//ÏÂÒ»ĞĞ»¡¶È
-				//µ±Ç°ĞĞ£¬µ±Ç°ÁĞ-----------0
+			{//---çº¬åº¦
+				double angradRow=Math.toRadians(angdegRow);//å½“å‰è¡Œå¼§åº¦
+				double angradRowNext=Math.toRadians(angdegRow+angdegRowSpan);//ä¸‹ä¸€è¡Œå¼§åº¦
+				//å½“å‰è¡Œï¼Œå½“å‰åˆ—-----------0
 				vertices[count++]=(float) (a*Math.cos(angradRow)*Math.cos(angradCol));
 				vertices[count++]=(float) (b*Math.sin(angradRow));
 				vertices[count++]=(float) (c*Math.cos(angradRow)*Math.sin(angradCol));
 				
-				textures[stCount++]=(float) (1-angradCol/(2*Math.PI));//st×ø±ê
+				textures[stCount++]=(float) (1-angradCol/(2*Math.PI));//ståæ ‡
 				textures[stCount++]=(float) (1-(angradRow+Math.PI/2)/Math.PI);				
-				//ÏÂÒ»ĞĞ£¬µ±Ç°ÁĞ-----------2
+				//ä¸‹ä¸€è¡Œï¼Œå½“å‰åˆ—-----------2
 				vertices[count++]=(float) (a*Math.cos(angradRowNext)*Math.cos(angradCol));
 				vertices[count++]=(float) (b*Math.sin(angradRowNext));
 				vertices[count++]=(float) (c*Math.cos(angradRowNext)*Math.sin(angradCol));
 				
-				textures[stCount++]=(float) (1-angradCol/(2*Math.PI));//st×ø±ê
+				textures[stCount++]=(float) (1-angradCol/(2*Math.PI));//ståæ ‡
 				textures[stCount++]=(float) (1-(angradRowNext+Math.PI/2)/Math.PI);
-				//ÏÂÒ»ĞĞ£¬ÏÂÒ»ÁĞ-----------3
+				//ä¸‹ä¸€è¡Œï¼Œä¸‹ä¸€åˆ—-----------3
 				vertices[count++]=(float) (a*Math.cos(angradRowNext)*Math.cos(angradColNext));
 				vertices[count++]=(float) (b*Math.sin(angradRowNext));
 				vertices[count++]=(float) (c*Math.cos(angradRowNext)*Math.sin(angradColNext));
 				
-				textures[stCount++]=(float) (1-angradColNext/(2*Math.PI));//st×ø±ê
+				textures[stCount++]=(float) (1-angradColNext/(2*Math.PI));//ståæ ‡
 				textures[stCount++]=(float) (1-(angradRowNext+Math.PI/2)/Math.PI);
 				
 				
-				//µ±Ç°ĞĞ£¬µ±Ç°ÁĞ-----------0
+				//å½“å‰è¡Œï¼Œå½“å‰åˆ—-----------0
 				vertices[count++]=(float) (a*Math.cos(angradRow)*Math.cos(angradCol));
 				vertices[count++]=(float) (b*Math.sin(angradRow));
 				vertices[count++]=(float) (c*Math.cos(angradRow)*Math.sin(angradCol));
 
-				textures[stCount++]=(float) (1-angradCol/(2*Math.PI));//st×ø±ê
+				textures[stCount++]=(float) (1-angradCol/(2*Math.PI));//ståæ ‡
 				textures[stCount++]=(float) (1-(angradRow+Math.PI/2)/Math.PI);
-				//ÏÂÒ»ĞĞ£¬ÏÂÒ»ÁĞ-----------3
+				//ä¸‹ä¸€è¡Œï¼Œä¸‹ä¸€åˆ—-----------3
 				vertices[count++]=(float) (a*Math.cos(angradRowNext)*Math.cos(angradColNext));
 				vertices[count++]=(float) (b*Math.sin(angradRowNext));
 				vertices[count++]=(float) (c*Math.cos(angradRowNext)*Math.sin(angradColNext));
 
-				textures[stCount++]=(float) (1-angradColNext/(2*Math.PI));//st×ø±ê
+				textures[stCount++]=(float) (1-angradColNext/(2*Math.PI));//ståæ ‡
 				textures[stCount++]=(float) (1-(angradRowNext+Math.PI/2)/Math.PI);
-				//µ±Ç°ĞĞ£¬ÏÂÒ»ÁĞ-----------1
+				//å½“å‰è¡Œï¼Œä¸‹ä¸€åˆ—-----------1
 				vertices[count++]=(float) (a*Math.cos(angradRow)*Math.cos(angradColNext));
 				vertices[count++]=(float) (b*Math.sin(angradRow));
 				vertices[count++]=(float) (c*Math.cos(angradRow)*Math.sin(angradColNext));
 				
-				textures[stCount++]=(float) (1-angradColNext/(2*Math.PI));//st×ø±ê
+				textures[stCount++]=(float) (1-angradColNext/(2*Math.PI));//ståæ ‡
 				textures[stCount++]=(float) (1-(angradRow+Math.PI/2)/Math.PI);
 			}
 		}
-		ByteBuffer vbb = ByteBuffer.allocateDirect(vertices.length*4);//´´½¨¶¥µã×ø±êÊı¾İ»º³å
-        vbb.order(ByteOrder.nativeOrder());//ÉèÖÃ×Ö½ÚË³Ğò
-        vertexBuffer = vbb.asFloatBuffer();//×ª»»ÎªfloatĞÍ»º³å
-        vertexBuffer.put(vertices);//Ïò»º³åÇøÖĞ·ÅÈë¶¥µã×ø±êÊı¾İ
-        vertexBuffer.position(0);//ÉèÖÃ»º³åÇøÆğÊ¼Î»ÖÃ
-        //·¨ÏòÁ¿Êı¾İ³õÊ¼»¯ 
-		float[] normals=new float[vertices.length];//·¨ÏòÁ¿Êı×é
+		ByteBuffer vbb = ByteBuffer.allocateDirect(vertices.length*4);//åˆ›å»ºé¡¶ç‚¹åæ ‡æ•°æ®ç¼“å†²
+        vbb.order(ByteOrder.nativeOrder());//è®¾ç½®å­—èŠ‚é¡ºåº
+        vertexBuffer = vbb.asFloatBuffer();//è½¬æ¢ä¸ºfloatå‹ç¼“å†²
+        vertexBuffer.put(vertices);//å‘ç¼“å†²åŒºä¸­æ”¾å…¥é¡¶ç‚¹åæ ‡æ•°æ®
+        vertexBuffer.position(0);//è®¾ç½®ç¼“å†²åŒºèµ·å§‹ä½ç½®
+        //æ³•å‘é‡æ•°æ®åˆå§‹åŒ– 
+		float[] normals=new float[vertices.length];//æ³•å‘é‡æ•°ç»„
 		int norCount=0;
 		for(int i=0;i<vertices.length;i+=3){
 			normals[norCount++]=vertices[i+0]/(a*a);
 			normals[norCount++]=vertices[i+1]/(b*b);
 			normals[norCount++]=vertices[i+2]/(c*c);
 		}
-		VectorUtil.normalizeAllVectors(normals);//¹æ¸ñ»¯·¨ÏòÁ¿
+		VectorUtil.normalizeAllVectors(normals);//è§„æ ¼åŒ–æ³•å‘é‡
 		
-        ByteBuffer nbb = ByteBuffer.allocateDirect(normals.length*4);//´´½¨¶¥µã·¨ÏòÁ¿Êı¾İ»º³å
-        nbb.order(ByteOrder.nativeOrder());//ÉèÖÃ×Ö½ÚË³Ğò
-        normalBuffer = nbb.asFloatBuffer();//×ª»»ÎªfloatĞÍ»º³å
-        normalBuffer.put(normals);//Ïò»º³åÇøÖĞ·ÅÈë¶¥µã·¨ÏòÁ¿Êı¾İ
-        normalBuffer.position(0);//ÉèÖÃ»º³åÇøÆğÊ¼Î»ÖÃ
-        //st×ø±êÊı¾İ³õÊ¼»¯
-        ByteBuffer cbb = ByteBuffer.allocateDirect(textures.length*4);//´´½¨¶¥µãÎÆÀíÊı¾İ»º³å
-        cbb.order(ByteOrder.nativeOrder());//ÉèÖÃ×Ö½ÚË³Ğò
-        textureBuffer = cbb.asFloatBuffer();//×ª»»ÎªfloatĞÍ»º³å
-        textureBuffer.put(textures);//Ïò»º³åÇøÖĞ·ÅÈë¶¥µãÎÆÀíÊı¾İ
-        textureBuffer.position(0);//ÉèÖÃ»º³åÇøÆğÊ¼Î»ÖÃ
+        ByteBuffer nbb = ByteBuffer.allocateDirect(normals.length*4);//åˆ›å»ºé¡¶ç‚¹æ³•å‘é‡æ•°æ®ç¼“å†²
+        nbb.order(ByteOrder.nativeOrder());//è®¾ç½®å­—èŠ‚é¡ºåº
+        normalBuffer = nbb.asFloatBuffer();//è½¬æ¢ä¸ºfloatå‹ç¼“å†²
+        normalBuffer.put(normals);//å‘ç¼“å†²åŒºä¸­æ”¾å…¥é¡¶ç‚¹æ³•å‘é‡æ•°æ®
+        normalBuffer.position(0);//è®¾ç½®ç¼“å†²åŒºèµ·å§‹ä½ç½®
+        //ståæ ‡æ•°æ®åˆå§‹åŒ–
+        ByteBuffer cbb = ByteBuffer.allocateDirect(textures.length*4);//åˆ›å»ºé¡¶ç‚¹çº¹ç†æ•°æ®ç¼“å†²
+        cbb.order(ByteOrder.nativeOrder());//è®¾ç½®å­—èŠ‚é¡ºåº
+        textureBuffer = cbb.asFloatBuffer();//è½¬æ¢ä¸ºfloatå‹ç¼“å†²
+        textureBuffer.put(textures);//å‘ç¼“å†²åŒºä¸­æ”¾å…¥é¡¶ç‚¹çº¹ç†æ•°æ®
+        textureBuffer.position(0);//è®¾ç½®ç¼“å†²åŒºèµ·å§‹ä½ç½®
 	}
     public void drawSelf(GL10 gl)
     {        
     	gl.glPushMatrix();
-        gl.glEnableClientState(GL10.GL_VERTEX_ARRAY);//ÆôÓÃ¶¥µã×ø±êÊı×é
-        gl.glEnableClientState(GL10.GL_NORMAL_ARRAY);//ÆôÓÃ¶¥µã·¨ÏòÁ¿Êı×é
-        gl.glEnableClientState(GL10.GL_TEXTURE_COORD_ARRAY);//ÆôÓÃ¶¥µãÎÆÀíÊı×é
-        //ÈÆÖáĞı×ª
+        gl.glEnableClientState(GL10.GL_VERTEX_ARRAY);//å¯ç”¨é¡¶ç‚¹åæ ‡æ•°ç»„
+        gl.glEnableClientState(GL10.GL_NORMAL_ARRAY);//å¯ç”¨é¡¶ç‚¹æ³•å‘é‡æ•°ç»„
+        gl.glEnableClientState(GL10.GL_TEXTURE_COORD_ARRAY);//å¯ç”¨é¡¶ç‚¹çº¹ç†æ•°ç»„
+        //ç»•è½´æ—‹è½¬
         gl.glRotatef(xAngle, 1, 0, 0);
         gl.glRotatef(yAngle, 0, 1, 0);
         gl.glRotatef(zAngle, 0, 0, 1);
-		//Îª»­±ÊÖ¸¶¨¶¥µã×ø±êÊı¾İ
+		//ä¸ºç”»ç¬”æŒ‡å®šé¡¶ç‚¹åæ ‡æ•°æ®
         gl.glVertexPointer
         (
-        		3,				//Ã¿¸ö¶¥µãµÄ×ø±êÊıÁ¿Îª3  xyz 
-        		GL10.GL_FLOAT,	//¶¥µã×ø±êÖµµÄÀàĞÍÎª GL_FLOAT
-        		0, 				//Á¬Ğø¶¥µã×ø±êÊı¾İÖ®¼äµÄ¼ä¸ô
-        		vertexBuffer	//¶¥µã×ø±êÊı¾İ
+        		3,				//æ¯ä¸ªé¡¶ç‚¹çš„åæ ‡æ•°é‡ä¸º3  xyz 
+        		GL10.GL_FLOAT,	//é¡¶ç‚¹åæ ‡å€¼çš„ç±»å‹ä¸º GL_FLOAT
+        		0, 				//è¿ç»­é¡¶ç‚¹åæ ‡æ•°æ®ä¹‹é—´çš„é—´éš”
+        		vertexBuffer	//é¡¶ç‚¹åæ ‡æ•°æ®
         );
-        //Îª»­±ÊÖ¸¶¨¶¥µã·¨ÏòÁ¿Êı¾İ
+        //ä¸ºç”»ç¬”æŒ‡å®šé¡¶ç‚¹æ³•å‘é‡æ•°æ®
         gl.glNormalPointer(GL10.GL_FLOAT, 0, normalBuffer);
         
-        //Îª»­±ÊÖ¸¶¨ÎÆÀíST×ø±ê»º³å
-        gl.glEnable(GL10.GL_TEXTURE_2D); //¿ªÆôÎÆÀí
-        gl.glTexCoordPointer(2, GL10.GL_FLOAT, 0, textureBuffer);//Îª»­±ÊÖ¸¶¨ÎÆÀíST×ø±ê»º³å
-        gl.glBindTexture(GL10.GL_TEXTURE_2D, textureId);//°ó¶¨µ±Ç°ÎÆÀí
-        //»æÖÆÍ¼ĞÎ
+        //ä¸ºç”»ç¬”æŒ‡å®šçº¹ç†STåæ ‡ç¼“å†²
+        gl.glEnable(GL10.GL_TEXTURE_2D); //å¼€å¯çº¹ç†
+        gl.glTexCoordPointer(2, GL10.GL_FLOAT, 0, textureBuffer);//ä¸ºç”»ç¬”æŒ‡å®šçº¹ç†STåæ ‡ç¼“å†²
+        gl.glBindTexture(GL10.GL_TEXTURE_2D, textureId);//ç»‘å®šå½“å‰çº¹ç†
+        //ç»˜åˆ¶å›¾å½¢
         gl.glDrawArrays
         (
-        		GL10.GL_TRIANGLES, 		//ÒÔÈı½ÇĞÎ·½Ê½Ìî³ä
-        		0, 			 			//¿ªÊ¼µã±àºÅ
-        		vCount					//¶¥µãµÄÊıÁ¿
+        		GL10.GL_TRIANGLES, 		//ä»¥ä¸‰è§’å½¢æ–¹å¼å¡«å……
+        		0, 			 			//å¼€å§‹ç‚¹ç¼–å·
+        		vCount					//é¡¶ç‚¹çš„æ•°é‡
         );
-        gl.glDisableClientState(GL10.GL_VERTEX_ARRAY);//½ûÓÃ¶¥µã×ø±êÊı×é
-        gl.glDisableClientState(GL10.GL_NORMAL_ARRAY);//½ûÓÃ¶¥µã·¨ÏòÁ¿Êı×é
-        gl.glDisableClientState(GL10.GL_TEXTURE_COORD_ARRAY);//½ûÓÃ¶¥µãÎÆÀíÊı×é
+        gl.glDisableClientState(GL10.GL_VERTEX_ARRAY);//ç¦ç”¨é¡¶ç‚¹åæ ‡æ•°ç»„
+        gl.glDisableClientState(GL10.GL_NORMAL_ARRAY);//ç¦ç”¨é¡¶ç‚¹æ³•å‘é‡æ•°ç»„
+        gl.glDisableClientState(GL10.GL_TEXTURE_COORD_ARRAY);//ç¦ç”¨é¡¶ç‚¹çº¹ç†æ•°ç»„
         gl.glPopMatrix();
     }
 }
